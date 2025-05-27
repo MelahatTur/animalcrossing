@@ -1,1 +1,0 @@
-#run the app from __init__.py
