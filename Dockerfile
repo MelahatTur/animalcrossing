@@ -8,6 +8,7 @@ RUN apk add --no-cache gcc musl-dev linux-headers postgresql postgresql-contrib 
 # For now we only copy pyproject.toml file to the docker image because we want to install all our Python libraries at this stage
 COPY pyproject.toml pyproject.toml
 RUN pip install -e .
+COPY . .
 
 # The entry point is called only when the container starts
  ENTRYPOINT ["./entrypoint.sh"]
