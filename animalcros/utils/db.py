@@ -14,19 +14,13 @@ def db_connection():
     return conn
 
 def init_db():
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # folder of db.py, e.g. /code/animalcros/utils
+    schema_path = os.path.join(base_dir, 'schema.sql')      # full path to schema.sql
+    with open(schema_path, 'r') as f:
+        sql = f.read()
+
     conn = db_connection()
     cur = conn.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS categories (id SERIAL PRIMARY KEY, category_name TEXT NOT NULL UNIQUE)''')
-    cur.execute('''CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, todo_text TEXT NOT NULL UNIQUE, category_id INTEGER NOT NULL, FOREIGN KEY(category_id) REFERENCES categories(id))''')
-    conn.commit()
-
-    categories = ['DIS', 'House chores']
-    for category in categories:
-        cur.execute('INSERT INTO categories (category_name) VALUES (%s) ON CONFLICT DO NOTHING', (category,))
-
-    todos = [('Assignment 1', 'DIS'), ('Groceries', 'House chores'), ('Assignment 2', 'DIS'), ('Project', 'DIS')]
-    for (todo, category) in todos:
-        cur.execute('INSERT INTO todos (todo_text, category_id) VALUES (%s, (SELECT id FROM categories WHERE category_name = %s)) ON CONFLICT DO NOTHING', (todo, category))
-
+    cur.execute(sql)
     conn.commit()
     conn.close()
