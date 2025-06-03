@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  margin: 0;
+  background: #f7f7f7;
+}
+
+nav ul {
+  list-style: none;
+  background: #2c3e50;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+main {
+  margin-top: 20px;
+}
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+  color: #777;
+}
+
+.flashes {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+  list-style: none;
+}
