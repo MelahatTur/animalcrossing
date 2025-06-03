@@ -1,25 +1,38 @@
 import pandas as pd
+import os
 
-# Load each CSV
-fish_df = pd.read_csv('animalcros/data/fish.csv')
-fish_df['type'] = 'fish'
+def preprocess_collectables():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    fish_path = os.path.join(base_dir, '../data/fish.csv')
+    insect_path = os.path.join(base_dir, '../data/insects.csv')
+    sea_path = os.path.join(base_dir, '../data/seaCreatures.csv')
 
-insects_df = pd.read_csv('animalcros/data/insects.csv')
-insects_df['type'] = 'insect'
+    # Load each CSV
+    fish_df = pd.read_csv(fish_path)
+    fish_df['type'] = 'fish'
 
-sea_critters_df = pd.read_csv('animalcros/data/seaCreatures.csv')
-sea_critters_df['type'] = 'seaCreature'
+    insects_df = pd.read_csv(insect_path)
+    insects_df['type'] = 'insect'
 
-# Get full column set
-all_columns = set(fish_df.columns) | set(insects_df.columns) | set(sea_critters_df.columns)
+    sea_critters_df = pd.read_csv(sea_path)
+    sea_critters_df['type'] = 'seaCreature'
 
-# Reindex all to have same columns
-fish_df = fish_df.reindex(columns=all_columns)
-insects_df = insects_df.reindex(columns=all_columns)
-sea_critters_df = sea_critters_df.reindex(columns=all_columns)
+    # Normalize column names
+    rename_map = {
+        "Name": "name",
+        "Sell": "price",
+        "Icon Image": "image",
+        "Critterpedia Description": "description"
+    }
 
-# Combine all
-combined_df = pd.concat([fish_df, insects_df, sea_critters_df], ignore_index=True)
+    for df in [fish_df, insects_df, sea_critters_df]:
+        df.rename(columns=rename_map, inplace=True)
 
-# Save combined CSV or process further
-combined_df.to_csv('animalcros/data/combined_collectables.csv', index=False)
+    all_columns = set(fish_df.columns) | set(insects_df.columns) | set(sea_critters_df.columns)
+    fish_df = fish_df.reindex(columns=all_columns)
+    insects_df = insects_df.reindex(columns=all_columns)
+    sea_critters_df = sea_critters_df.reindex(columns=all_columns)
+
+    combined_df = pd.concat([fish_df, insects_df, sea_critters_df], ignore_index=True)
+
+    return combined_df

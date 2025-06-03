@@ -1,5 +1,7 @@
 import psycopg2
 import os
+import pandas as pd
+from .import_data import preprocess_collectables
 
 # Try to get from system enviroment variable
 # Set your Postgres user and password as second arguments of these two next function calls
@@ -23,4 +25,27 @@ def init_db():
     cur = conn.cursor()
     cur.execute(sql)
     conn.commit()
+    conn.close()
+
+def load_collectables():
+    df = preprocess_collectables()
+
+    conn = db_connection()
+    cur = conn.cursor()
+
+    for _, row in df.iterrows():
+        cur.execute("""
+            INSERT INTO collectables (name, image, type, price, description)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
+        """, (
+            row.get('name'),
+            row.get('image'),
+            row.get('type'),
+            int(row['price']) if pd.notna(row.get('price')) else 0,
+            row.get('description')
+        ))
+
+    conn.commit()
+    cur.close()
     conn.close()
