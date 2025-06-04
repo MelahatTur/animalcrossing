@@ -1,8 +1,23 @@
-#Building the app
+### Animal Crossing Collectable Tracker ###
 
-run by standing in ac directory and typing "compose-docker up -d", then
-naviagte to localhost:5000 in your browser.
-(right now in the todo demo we have three pages you can navigate on
-localhost:5000
-localhost:5000/categories
-localhost:5000/todo)
+
+
+# Setup
+
+1. Clone the public repository:
+https://github.com/MelahatTur/animalcrossing.git
+
+2. create and activate a virtual environment
+Windows:
+    python -m venv .venv
+    .venv\Scripts\activate
+
+macOS/Linux:
+    python3 -m venv .venv
+    . .venv/bin/activate
+
+3. Install required packages using requirements.txt
+pip install -r requirements.txt
+
+4. 
+
