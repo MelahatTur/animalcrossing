@@ -34,6 +34,7 @@ def load_collectables():
     cur = conn.cursor()
 
     for _, row in df.iterrows():
+        print(f"Inserting: {row['name']} - {row.get('description')}")
         cur.execute("""
             INSERT INTO collectables (name, image, type, price, description)
             VALUES (%s, %s, %s, %s, %s)
