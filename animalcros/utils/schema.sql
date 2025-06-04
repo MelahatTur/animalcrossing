@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS availability (
 );
 
 -- Collections (user-collected items)
-CREATE TABLE IF NOT EXISTS collections (
+CREATE TABLE IF NOT EXISTS user_collection (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     collectable_id INTEGER REFERENCES collectables(id) ON DELETE CASCADE,

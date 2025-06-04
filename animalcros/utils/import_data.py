@@ -22,7 +22,8 @@ def preprocess_collectables():
         "Name": "name",
         "Sell": "price",
         "Icon Image": "image",
-        "Description": "description"
+        "Description": "description",
+        "__id" : "id"
     }
 
     for df in [fish_df, insects_df, sea_critters_df]:

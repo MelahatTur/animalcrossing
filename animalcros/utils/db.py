@@ -50,3 +50,40 @@ def load_collectables():
     conn.commit()
     cur.close()
     conn.close()
+
+def load_availability():
+    combined_df = preprocess_collectables()
+
+    availability_data = []
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    conn = db_connection()
+    cur = conn.cursor()
+
+    for _, row in combined_df.iterrows():
+        name = row['name']
+
+        # Fetch collectable_id from the database
+        cur.execute("SELECT id FROM collectables WHERE name = %s", (name,))
+        result = cur.fetchone()
+        if not result:
+            continue
+        collectable_id = result[0]
+
+        for hemi in ['NH', 'SH']:
+            for month in months:
+                col = f"{hemi} {month}"
+                time_str = row.get(col)
+
+                if pd.notna(time_str) and time_str.strip().lower() not in ['na', 'nan', '']:
+                    availability_data.append((collectable_id, month, hemi, time_str.strip()))
+
+    if availability_data:
+        cur.executemany("""
+            INSERT INTO availability (collectable_id, month, hemisphere, time_of_day)
+            VALUES (%s, %s, %s, %s)
+        """, availability_data)
+
+    conn.commit()
+    conn.close()
