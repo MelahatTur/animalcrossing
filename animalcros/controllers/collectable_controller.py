@@ -55,7 +55,7 @@ def collectables():
 
     all_collectables = load_collectables()
     results = []
-
+    
     for item in all_collectables:
         name = item.get("Name", "").lower()
         months = item.get("Months", "").lower()
