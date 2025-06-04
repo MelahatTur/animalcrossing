@@ -3,7 +3,30 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ session.get('username') }}!</h2>
+<h2>Welcome, {{ username }}!</h2>
+
 <p>This is your dashboard. You can view and manage your collections here.</p>
 <a href="{{ url_for('auth.logout') }}">Logout</a>
+
+<hr>
+
+<h3>Collection Progress</h3>
+<p>{{ collected_count }} out of {{ total }} collected ({{ progress }}%)</p>
+<progress value="{{ collected_count }}" max="{{ total }}"></progress>
+
+<hr>
+
+<h3>Your Collection</h3>
+{% if collected %}
+<ul>
+  {% for item in collected %}
+  <li>
+    <strong>{{ item.name }}</strong> ({{ item.type }}) —
+    <img src="{{ item.image }}" alt="{{ item.name }}" width="40">
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>You haven't collected anything yet!</p>
+{% endif %}
 {% endblock %}

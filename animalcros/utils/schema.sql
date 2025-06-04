@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS user_collection CASCADE;
+DROP TABLE IF EXISTS availability CASCADE;
+DROP TABLE IF EXISTS collectables CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
@@ -5,11 +10,10 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL
 );
 
-
 -- Collectables (master list)
 CREATE TABLE IF NOT EXISTS collectables (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,  -- UNIQUE on name to prevent duplicates
     image TEXT,
     type TEXT CHECK (type IN ('fish', 'insect', 'seaCreature')),
     price INTEGER,
@@ -25,7 +29,8 @@ CREATE TABLE IF NOT EXISTS availability (
         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     )),
     hemisphere TEXT CHECK (hemisphere IN ('NH', 'SH')),
-    time_of_day TEXT
+    time_of_day TEXT,
+    UNIQUE (collectable_id, month, hemisphere)  -- unique constraint to avoid duplicates
 );
 
 -- Collections (user-collected items)
