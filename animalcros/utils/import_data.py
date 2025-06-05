@@ -7,7 +7,6 @@ def preprocess_collectables():
     insect_path = os.path.join(base_dir, '../data/insects.csv')
     sea_path = os.path.join(base_dir, '../data/seaCreatures.csv')
 
-    # Load each CSV
     fish_df = pd.read_csv(fish_path)
     fish_df['type'] = 'fish'
 
@@ -17,7 +16,6 @@ def preprocess_collectables():
     sea_critters_df = pd.read_csv(sea_path)
     sea_critters_df['type'] = 'seaCreature'
 
-    # Normalize column names
     rename_map = {
         "Name": "name",
         "Sell": "price",

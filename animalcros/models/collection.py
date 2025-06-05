@@ -15,14 +15,13 @@ def get_user_collected(user_id):
         rows = cur.fetchall()
     conn.close()
 
-    # Convert tuples to dicts with keys matching your template
+
     collected_items = [{"name": r[0], "image": r[1], "type": r[2]} for r in rows]
     return collected_items
 
 def add_to_user_collection(user_id, collectable_id):
     conn = db_connection()
     with conn.cursor() as cur:
-        # Check if already collected
         cur.execute(
             "SELECT 1 FROM user_collection WHERE user_id = %s AND collectable_id = %s",
             (user_id, collectable_id)
@@ -30,7 +29,6 @@ def add_to_user_collection(user_id, collectable_id):
         if cur.fetchone():
             return False, "You have already collected this item."
 
-        # Insert new collection item
         cur.execute(
             "INSERT INTO user_collection (user_id, collectable_id) VALUES (%s, %s)",
             (user_id, collectable_id)
@@ -117,7 +115,6 @@ def search_collectables(query=None, month=None, ctype=None, hemisphere="NH"):
         cur.execute(query_sql, params)
         results = cur.fetchall()
 
-        # Process image filename as before
         processed_results = []
         for r in results:
             id_, name, image_url, type_, price, desc, months, hemispheres, times = r

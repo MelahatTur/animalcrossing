@@ -16,8 +16,8 @@ def db_connection():
     return conn
 
 def init_db():
-    base_dir = os.path.dirname(os.path.abspath(__file__))  # folder of db.py, e.g. /code/animalcros/utils
-    schema_path = os.path.join(base_dir, 'schema.sql')      # full path to schema.sql
+    base_dir = os.path.dirname(os.path.abspath(__file__))  
+    schema_path = os.path.join(base_dir, 'schema.sql')      
     with open(schema_path, 'r') as f:
         sql = f.read()
 
@@ -32,7 +32,7 @@ def load_all_data():
     conn = db_connection()
     cur = conn.cursor()
 
-    # Insert collectables with ON CONFLICT DO NOTHING to avoid duplicates
+    # Insert collectables 
     for _, row in df.iterrows():
         cur.execute("""
             INSERT INTO collectables (name, image, type, price, description)
@@ -46,13 +46,11 @@ def load_all_data():
             row.get('description')
         ))
 
-    # Prepare availability data for bulk insert/update
     availability_data = []
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
     for _, row in df.iterrows():
-        # Get collectable_id for this name
         cur.execute("SELECT id FROM collectables WHERE name = %s", (row['name'],))
         result = cur.fetchone()
         if not result:
@@ -66,7 +64,7 @@ def load_all_data():
                 if pd.notna(time_str) and time_str.strip().lower() not in ['na', 'nan', '']:
                     availability_data.append((collectable_id, month, hemi, time_str.strip()))
 
-    # Insert or update availability with ON CONFLICT DO UPDATE
+    # Insert or update availability
     if availability_data:
         cur.executemany("""
             INSERT INTO availability (collectable_id, month, hemisphere, time_of_day)
