@@ -1,6 +1,9 @@
 
 # Animal Crossing Collectable Tracker
-This is an webapp 
+This web application was developed as a group project for the Databases and Information Systems course at the University of Copenhagen.
+The Animal Crossing Collectable Tracker is designed for players of Animal Crossing: New Horizons, allowing users to create an account and explore a structured collection of critters from the game. Once the user has registered an account, users can search and filter through various categories of collectables to view detailed information.
+In addition to browsing, users can add items to their personal collection, which is then displayed on their dashboard for tracking progress and planning future in-game collecting.
+The app combines PostgreSQL, Flask, and CSV-based data import to deliver a functional companion tool for Animal Crossing fans.
 
 ## Setup
 
