@@ -13,6 +13,7 @@ https://github.com/MelahatTur/animalcrossing.git
 ```
 
 2. create and activate a virtual environment:
+   
 Windows:
 ```shell
 python -m venv .venv
@@ -26,7 +27,8 @@ python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-3. Open Docker Desktop and activate.
+3. Open Docker Desktop and activate:
+   
 If you have another docker container open, you need to close it with:
 ```shell
 docker-compose down
