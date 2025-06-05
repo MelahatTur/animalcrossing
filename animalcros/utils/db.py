@@ -26,19 +26,18 @@ def init_db():
     cur.execute(sql)
     conn.commit()
     conn.close()
-
-def load_collectables():
+    
+def load_all_data():
     df = preprocess_collectables()
-
     conn = db_connection()
     cur = conn.cursor()
 
+    # Insert collectables with ON CONFLICT DO NOTHING to avoid duplicates
     for _, row in df.iterrows():
-        print(f"Inserting: {row['name']} - {row.get('description')}")
         cur.execute("""
             INSERT INTO collectables (name, image, type, price, description)
             VALUES (%s, %s, %s, %s, %s)
-            ON CONFLICT DO NOTHING
+            ON CONFLICT (name) DO NOTHING
         """, (
             row.get('name'),
             row.get('image'),
@@ -47,25 +46,14 @@ def load_collectables():
             row.get('description')
         ))
 
-    conn.commit()
-    cur.close()
-    conn.close()
-
-def load_availability():
-    combined_df = preprocess_collectables()
-
+    # Prepare availability data for bulk insert/update
     availability_data = []
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-    conn = db_connection()
-    cur = conn.cursor()
-
-    for _, row in combined_df.iterrows():
-        name = row['name']
-
-        # Fetch collectable_id from the database
-        cur.execute("SELECT id FROM collectables WHERE name = %s", (name,))
+    for _, row in df.iterrows():
+        # Get collectable_id for this name
+        cur.execute("SELECT id FROM collectables WHERE name = %s", (row['name'],))
         result = cur.fetchone()
         if not result:
             continue
@@ -75,15 +63,18 @@ def load_availability():
             for month in months:
                 col = f"{hemi} {month}"
                 time_str = row.get(col)
-
                 if pd.notna(time_str) and time_str.strip().lower() not in ['na', 'nan', '']:
                     availability_data.append((collectable_id, month, hemi, time_str.strip()))
 
+    # Insert or update availability with ON CONFLICT DO UPDATE
     if availability_data:
         cur.executemany("""
             INSERT INTO availability (collectable_id, month, hemisphere, time_of_day)
             VALUES (%s, %s, %s, %s)
+            ON CONFLICT (collectable_id, month, hemisphere) DO UPDATE
+            SET time_of_day = EXCLUDED.time_of_day
         """, availability_data)
 
     conn.commit()
+    cur.close()
     conn.close()
