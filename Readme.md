@@ -66,7 +66,7 @@ We have followed the Model View Controller pattern to organize our web applicati
 
 Here is the files in the __animalcros__ folder:
 - __\_\_init\_\_.py__: Initializes the flask-applikation, set up the database, loads data, and registers all blueprints for routing.
-- __forms.py__: Defines Flask-WTF forms for user registration and login, including input fields and validation rules.
+- __forms.py__: Defines Flask-WTF forms for user registration and login, including input fields and validation rules, which includes regular expressions.
 
 Here is the files in the general __animalcrossing__ folder:
 - __.gitattributes__: Git configuration files for ignoring temp or config files.
