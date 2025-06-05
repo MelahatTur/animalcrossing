@@ -26,12 +26,7 @@ python3 -m venv .venv
 . .venv/bin/activate
 ```
 
-3. Install required packages using requirements.txt:
-```shell
-pip install -r requirements.txt
-```
-
-4. Open Docker Desktop and activate
+3. Open Docker Desktop and activate
 If you have another docker container open, you need to close it with:
 ```shell
 docker-compose down
@@ -42,7 +37,7 @@ You'll then have to build the docker container:
 docker compose up --build -d
 ```
 
-5. Open the webapp from your browser:
+4. Open the webapp from your browser:
 ```shell
 http://localhost:5000/
 ```
@@ -79,4 +74,3 @@ Here is the files in the general __animalcrossing__ folder:
 - __entrypoint.sh__: Shell script that runs on Docker container startup.
 - __pyproject.toml__: Used to define the project metadata and dependencies.
 - __Readme.md__: This file. Documentation for setting up and using the project.
-- __requirements.txt__: List of python packages required to run the webapp.
