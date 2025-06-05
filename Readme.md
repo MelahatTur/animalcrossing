@@ -1,5 +1,6 @@
 
 # Animal Crossing Collectable Tracker
+This is an webapp 
 
 ## Setup
 
@@ -45,13 +46,14 @@ You'll then have to build the docker container:
 ## Navigation through the webapp
 You can navigate through the webapp's pages using the buttons appearing or following the links to the pages:
 
-|Command                |Link to page                   |Description                                                                    |
-|-----------------------|-------------------------------|-------------------------------------------------------------------------------| 
-|Home                   |http://localhost:5000/         |The initial page, where you can register or login                              |
-|Register               |http://localhost:5000/register |Where you can register an account                                              |
-|Login                  |http://localhost:5000/login    |Where you can log in on your account.                                          |
-|Dashboard              |http://localhost:5000/dashboard|If you're logged in, you enter your dashboard.                                 |
-|Logout                 |                               |Not a page, but a function which logs you out of your account and deletes it.  |
+|Command                |Link to page                      |Description                                                   |
+|-----------------------|----------------------------------|--------------------------------------------------------------| 
+|Home                   |http://localhost:5000/            |The initial page, where you can register or login             |
+|Register               |http://localhost:5000/register    |Where you can register an account                             |
+|Login                  |http://localhost:5000/login       |Where you can log in on your account.                         |
+|Dashboard              |http://localhost:5000/dashboard   |If you're logged in, you enter your dashboard. Here you can view your collection and your progress. You can also delete your account.                |
+|Collectables           |http://localhost:5000/collectables| Where you can search and filter through collectables. if you're logged in, you can also add the an collectable to your dashboard.                |
+|Logout                 |                                  |Not a page, but a function which logs you out of your account.|
 
 ## Folder content
 We have followed the Model View Controller pattern to organize our web application, though we call View for templates. The implementation of the app is implemented in the folder __animalcros__. Here is a preview and explanation of the folders the __animalcros__ folder contains:
