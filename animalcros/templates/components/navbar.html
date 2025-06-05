@@ -1,6 +1,9 @@
 <nav class="navbar-box">
   <a href="{{ url_for('homepage') }}">🏠 Home</a>
   <a href="{{ url_for('dashboard.user_dashboard') }}">📗 Dashboard</a>
+  <a href="{{ url_for('collectable.collectables') }}">🦋 Collectables</a>
+  {% if session.get('username') %}
   <a href="{{ url_for('auth.logout') }}">🔒 Logout</a>
-  <span class="logged-in-user">🔓 Logged in as {{ session['username'] }}</span>
+  <span class="logged-in-user"> Logged in as {{ session['username'] }}</span>
+  {% endif %}
 </nav>

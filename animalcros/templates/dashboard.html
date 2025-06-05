@@ -6,13 +6,21 @@
 <h2>Welcome, {{ username }}!</h2>
 
 <p>This is your dashboard. You can view and manage your collections here.</p>
-<a href="{{ url_for('auth.logout') }}">Logout</a>
 
 <hr>
 
 <h3>Collection Progress</h3>
 <p>{{ collected_count }} out of {{ total }} collected ({{ progress }}%)</p>
 <progress value="{{ collected_count }}" max="{{ total }}"></progress>
+
+<form action="{{ url_for('auth.delete_account') }}" method="post"
+  onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
+  style="margin-bottom: 1em;">
+  <button type="submit"
+    style="background-color: #f44336; color: white; border: none; padding: 0.5em 1em; cursor: pointer; border-radius: 4px;">
+    🗑️ Delete Account
+  </button>
+</form>
 
 <hr>
 

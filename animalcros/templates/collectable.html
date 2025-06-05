@@ -1,144 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Collectables</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #fdf6f0;
-            color: #444;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+{% extends "base.html" %}
 
-        h1 {
-            color: #88c057;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
+{% block content %}
+<h1>Animal Crossing Collectables</h1>
 
-        form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            background-color: #fff8f0;
-            padding: 1rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
-        }
+<form method="get" action="{{ url_for('collectable.collectables') }}">
+    <input type="text" name="query" placeholder="Search by name..." value="{{ query }}">
 
-        input[type="text"],
-        select {
-            padding: 0.5rem;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-        }
+    <select name="type">
+        <option value="">All Types</option>
+        <option value="fish" {% if ctype=='fish' %}selected{% endif %}>Fish</option>
+        <option value="insect" {% if ctype=='insect' %}selected{% endif %}>Insect</option>
+        <option value="seacreature" {% if ctype=='seacreature' %}selected{% endif %}>Sea Creature</option>
+    </select>
 
-        button {
-            background-color: #ffb6c1;
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #ff9bb3;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            background-color: #fff;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 10px;
-            border-left: 6px solid #88c057;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        strong {
-            font-size: 1.1rem;
-            color: #333;
-        }
-
-        img {
-            display: block;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-        }
-    </style>
-</head>
-<body>
-    <h1>🌿 Critter Search 🌸</h1>
-
-    <form method="get" action="/collectables">
-        <input type="text" name="query" placeholder="e.g. Butterfly..." value="{{ query }}">
-
-        <select name="type">
-            <option value="">All Types</option>
-            <option value="Fish" {% if ctype == 'Fish' %}selected{% endif %}>Fish</option>
-            <option value="Bug" {% if ctype == 'Bug' %}selected{% endif %}>Bug</option>
-            <option value="Sea Creature" {% if ctype == 'Sea Creature' %}selected{% endif %}>Sea Creature</option>
-        </select>
-
-        <select name="month">
-            <option value="">Any Month</option>
-            {% for m in ['January','February','March','April','May','June','July','August','September','October','November','December'] %}
-                <option value="{{ m }}" {% if month == m %}selected{% endif %}>{{ m }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">🔍 Search</button>
-    </form>
-
-    <h2>Results</h2>
-    <ul>
-        {% for item in results %}
-            <li>
-                {% if item.get("Icon Filename") %}
-                    <img src="{{ url_for('static', filename='images/' ~ item['Icon Filename']) }}"
-                         alt="{{ item['Name'] }}"
-                         width="64" height="64">
-                {% endif %}
-
-                <strong>{{ item["Name"] }}</strong> ({{ item["Type"] }})<br>
-
-                {% if item["Type"] == "Fish" %}
-                    🎣 Where/How: {{ item.get("Where/How", "?") }}<br>
-                    🎯 Shadow: {{ item.get("Shadow", "?") }}<br>
-                    🔍 Catch Difficulty: {{ item.get("Catch Difficulty", "?") }}<br>
-                    👀 Vision: {{ item.get("Vision", "?") }}<br>
-                    💰 Sell Price: {{ item.get("Sell", "?") }}<br>
-
-                {% elif item["Type"] == "Bug" %}
-                    🌳 Where/How: {{ item.get("Where/How", "?") }}<br>
-                    ☁️ Weather: {{ item.get("Weather", "?") }}<br>
-                    💰 Sell Price: {{ item.get("Sell", "?") }}<br>
-
-                {% elif item["Type"] == "Sea Creature" %}
-                    🌊 Shadow: {{ item.get("Shadow", "?") }}<br>
-                    🐢 Speed: {{ item.get("Movement Speed", "?") }}<br>
-                    📏 Size: {{ item.get("Size", "?") }}<br>
-                    🌐 Surface: {{ item.get("Surface", "?") }}<br>
-                    💰 Sell Price: {{ item.get("Sell", "?") }}<br>
-                {% endif %}
-
-                📅 Months: {{ item.get("Months", "?") }}
-            </li>
-        {% else %}
-            <li>No results found 😢</li>
+    <select name="month">
+        <option value="">All Months</option>
+        {% for m in ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] %}
+        <option value="{{ m }}" {% if month==m %}selected{% endif %}>{{ m }}</option>
         {% endfor %}
-    </ul>
+    </select>
 
-</body>
-</html>
+    <select name="hemisphere">
+        <option value="NH" {% if hemisphere=='NH' %}selected{% endif %}>Northern Hemisphere</option>
+        <option value="SH" {% if hemisphere=='SH' %}selected{% endif %}>Southern Hemisphere</option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<hr>
+
+{% if results %}
+<ul style="list-style: none; padding: 0;">
+    {% for item in results %}
+    <li style="margin-bottom: 1.5em; border-bottom: 1px solid #ccc; padding-bottom: 1em;">
+        {% if item[2] %}
+        <img src="https://acnhcdn.com/latest/MenuIcon/{{ item[2] }}" alt="{{ item[1] }}" width="60"
+            style="vertical-align: middle; margin-right: 10px;">
+        {% endif %}
+        <strong>{{ item[1] }}</strong> ({{ item[3]|capitalize }}) - {{ item[4] }} Bells
+        <p>{{ item[5] }}</p>
+
+        {% if item[6] %}
+        <p><strong>Available Months:</strong> {{ item[6] }}</p>
+        {% endif %}
+        {% if item[7] %}
+        <p><strong>Hemisphere:</strong> {{ item[7] }}</p>
+        {% endif %}
+        {% if item[8] %}
+        <p><strong>Time of Day:</strong> {{ item[8] }}</p>
+        {% endif %}
+
+        <form method="post" action="{{ url_for('collectable.collectables') }}" style="display:inline;">
+            <input type="hidden" name="collectable_id" value="{{ item[0] }}">
+            <button type="submit">Add to My Collection</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No collectables found matching your criteria.</p>
+{% endif %}
+
+{% endblock %}

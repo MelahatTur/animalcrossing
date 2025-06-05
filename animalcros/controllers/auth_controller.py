@@ -33,9 +33,15 @@ def login():
 
 @auth_bp.route("/logout")
 def logout():
+    session.clear()
+    flash("Logged out successfully.")
+    return redirect(url_for("auth.login"))
+
+@auth_bp.route("/delete_account", methods=["POST"])
+def delete_account():
     user_id = session.get("user_id")
     if user_id:
-        User.delete_user_by_id(user_id)  # You’ll create this method in your model
-    session.clear()
-    flash("Logged out and user deleted.")
-    return redirect(url_for("auth.login"))
+        User.delete_user_by_id(user_id)
+        session.clear()
+        flash("Your account has been deleted.")
+    return redirect(url_for("auth.register"))
