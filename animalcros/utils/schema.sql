@@ -9,10 +9,10 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL
 );
 
--- Collectables (master list)
+-- Collectables 
 CREATE TABLE IF NOT EXISTS collectables (
     id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,  -- UNIQUE on name to prevent duplicates
+    name TEXT UNIQUE NOT NULL,  
     image TEXT,
     type TEXT CHECK (type IN ('fish', 'insect', 'seaCreature')),
     price INTEGER,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS availability (
     )),
     hemisphere TEXT CHECK (hemisphere IN ('NH', 'SH')),
     time_of_day TEXT,
-    UNIQUE (collectable_id, month, hemisphere)  -- unique constraint to avoid duplicates
+    UNIQUE (collectable_id, month, hemisphere)  
 );
 
 -- Collections (user-collected items)
