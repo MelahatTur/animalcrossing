@@ -73,4 +73,9 @@ Here is the files in the general __animalcrossing__ folder:
 - __Dockerfile__: Instructions for bulding the Docker image for the Flask app.
 - __entrypoint.sh__: Shell script that runs on Docker container startup.
 - __pyproject.toml__: Used to define the project metadata and dependencies.
+<<<<<<< HEAD
 - __Readme.md__: This file. Documentation for setting up and using the project.
+=======
+- __Readme.md__: This file. Documentation for setting up and using the project.
+- __requirements.txt__: List of python packages required to run the webapp.
+>>>>>>> e99cbbe3b229a115ac43097399d9908d0d715a23
