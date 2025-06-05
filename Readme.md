@@ -15,36 +15,31 @@ https://github.com/MelahatTur/animalcrossing.git
 2. create and activate a virtual environment:
 Windows:
 ```shell
-    python -m venv .venv
-    Set-ExecutionPolicy Unrestricted -Scope Process
-    .venv\Scripts\activate
+python -m venv .venv
+Set-ExecutionPolicy Unrestricted -Scope Process
+.venv\Scripts\activate
 ```
 
 macOS/Linux:
 ```shell
-    python3 -m venv .venv
-    . .venv/bin/activate
+python3 -m venv .venv
+. .venv/bin/activate
 ```
 
-3. Install required packages using requirements.txt:
-```shell
-pip install -r requirements.txt
-```
-
-4. Open Docker Desktop and activate
+3. Open Docker Desktop and activate
 If you have another docker container open, you need to close it with:
 ```shell
-    docker-compose down
+docker-compose down
 ```
 
 You'll then have to build the docker container:
 ```shell
-    docker compose up --build -d
+docker compose up --build -d
 ```
 
-5. Open the webapp from your browser:
+4. Open the webapp from your browser:
 ```shell
-    http://localhost:5000/
+http://localhost:5000/
 ```
 ## Navigation through the webapp
 You can navigate through the webapp's pages using the buttons appearing or following the links to the pages:
@@ -79,4 +74,3 @@ Here is the files in the general __animalcrossing__ folder:
 - __entrypoint.sh__: Shell script that runs on Docker container startup.
 - __pyproject.toml__: Used to define the project metadata and dependencies.
 - __Readme.md__: This file. Documentation for setting up and using the project.
-- __requirements.txt__: List of python packages required to run the webapp.
